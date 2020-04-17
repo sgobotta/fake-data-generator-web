@@ -39,4 +39,4 @@ jobs:
         PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
         HOST: ${{ secrets.DOKKU_HOST_NAME }}
         PROJECT: ${{ secrets.DOKKU_APP_NAME }}
-        BRANCH: ${GITHUB_REF##*/}
+        BRANCH: ${GITHUB_REF}
