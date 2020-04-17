@@ -29,7 +29,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-
+run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//_/g')"
     steps:
     - uses: actions/checkout@v1
     - name: Dokku deploy
@@ -39,4 +39,4 @@ jobs:
         PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
         HOST: ${{ secrets.DOKKU_HOST_NAME }}
         PROJECT: ${{ secrets.DOKKU_APP_NAME }}
-        BRANCH: $(echo ${GITHUB_REF} | sed 's/\//_/g')
+        BRANCH: ${{ github.event.pull_request.head.ref }}
