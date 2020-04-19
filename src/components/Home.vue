@@ -99,18 +99,18 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-body {
-  padding-left: 40px;
-  padding-right: 40px;
-}
 .container {
   text-align: left;
   display: flex;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 .code-container {
   flex: 1;
   width: 100%;
-  max-width: 50%
+  max-width: 50%;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 @media only screen and (max-width: 992px) {
   .container {
