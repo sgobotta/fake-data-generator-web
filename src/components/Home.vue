@@ -17,7 +17,7 @@
 </template>
 
 <script>
-// import debounce from 'lodash.debounce'
+import debounce from 'lodash.debounce'
 import { generateModel, validateModel } from 'fake-data-generator'
 import CodeEditor from './CodeMirror'
 import codeExample from '@/assets/example'
@@ -91,7 +91,7 @@ export default {
   watch: {
     code (newValue) {
       this.shouldParse = true
-      // debounce(this.delayParse, 100)()
+      debounce(this.delayParse, 100)()
     }
   }
 }
