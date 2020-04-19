@@ -6,14 +6,17 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "start": "npm run dev",
+    "start": "npm run build",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "test": "npm run unit",
     "lint": "eslint --ext .js,.vue src test/unit",
     "build": "node build/build.js"
   },
   "dependencies": {
+    "fake-data-generator": "^0.4.0",
+    "lodash.debounce": "^4.0.8",
     "vue": "^2.5.2",
+    "vue-codemirror": "^4.0.6",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
