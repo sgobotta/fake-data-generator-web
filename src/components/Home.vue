@@ -1,82 +1,68 @@
 <template>
   <div class="container">
     <div class="code-container">
-      <codemirror v-model="code" :options="cmOption" />
+      <CodeEditor
+        :code="code"
+        :options="cmInputOptions"
+        :onTextChange="onChange"
+      />
     </div>
-    <div class="pre-container">
-      <pre class="pre">{{ code }}</pre>
+    <div class="code-container">
+      <CodeEditor
+        :code="parsedModel"
+        :options="cmOutputOptions"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import debounce from 'lodash.debounce'
-import { codemirror } from 'vue-codemirror'
-
-// base style
-import 'codemirror/lib/codemirror.css'
-
-// theme css
-import 'codemirror/theme/base16-dark.css'
-// language
-import 'codemirror/mode/vue/vue.js'
-
-// active-line.js
-import 'codemirror/addon/selection/active-line.js'
-
-// styleSelectedText
-import 'codemirror/addon/selection/mark-selection.js'
-import 'codemirror/addon/search/searchcursor.js'
-
-// highlightSelectionMatches
-import 'codemirror/addon/scroll/annotatescrollbar.js'
-import 'codemirror/addon/search/matchesonscrollbar.js'
-import 'codemirror/addon/search/match-highlighter.js'
-
-// keyMap
-import 'codemirror/mode/clike/clike.js'
-import 'codemirror/addon/edit/matchbrackets.js'
-import 'codemirror/addon/comment/comment.js'
-import 'codemirror/addon/dialog/dialog.js'
-import 'codemirror/addon/dialog/dialog.css'
-import 'codemirror/addon/search/search.js'
-import 'codemirror/keymap/sublime.js'
-
-// foldGutter
-import 'codemirror/addon/fold/foldgutter.css'
-import 'codemirror/addon/fold/brace-fold.js'
-import 'codemirror/addon/fold/comment-fold.js'
-import 'codemirror/addon/fold/foldcode.js'
-import 'codemirror/addon/fold/foldgutter.js'
-import 'codemirror/addon/fold/indent-fold.js'
-import 'codemirror/addon/fold/markdown-fold.js'
-import 'codemirror/addon/fold/xml-fold.js'
+import { generateModel, validateModel } from 'fake-data-generator'
+import CodeEditor from './CodeMirror'
+import codeExample from '@/assets/example'
 
 export default {
   name: 'Home',
   components: {
-    codemirror
+    CodeEditor
   },
   data () {
     return {
-      code: 'const A = 10',
-      cmOption: {
-        tabSize: 2,
-        styleActiveLine: true,
-        lineNumbers: true,
-        line: true,
-        foldGutter: true,
-        styleSelectedText: true,
-        mode: 'text/javascript',
-        matchBrackets: true,
-        showCursorWhenSelecting: true,
-        theme: 'base16-dark',
+      code: codeExample,
+      cmInputOptions: {
         extraKeys: { 'Ctrl': 'autocomplete' },
+        foldGutter: true,
         hintOptions: {
           completeSingle: false
-        }
+        },
+        lineNumbers: true,
+        line: true,
+        matchBrackets: true,
+        mode: 'text/javascript',
+        showCursorWhenSelecting: true,
+        styleActiveLine: true,
+        styleSelectedText: true,
+        tabSize: 2,
+        theme: 'base16-dark'
+      },
+      cmOutputOptions: {
+        foldGutter: true,
+        line: true,
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: 'text/javascript',
+        readOnly: true,
+        showCursorWhenSelecting: true,
+        styleActiveLine: false,
+        styleSelectedText: true,
+        tabSize: 2,
+        theme: 'base16-dark'
       }
     }
+  },
+  created () {
+    this.parseModel()
   },
   methods: {
     delayParse () {
@@ -85,16 +71,27 @@ export default {
         this.parseModel()
       }
     },
-    parseModel (newValue) {
-      console.log('new value ::: ', newValue)
-      console.log('parsing...', this.code)
-      this.parsedModel = `-${this.parsedModel}`
+    parseModel () {
+      const parsedCode = JSON.parse(this.code)
+      const generatedModel = generateModel({
+        amountArg: 2,
+        modelArg: parsedCode,
+        inputType: 'object',
+        outputType: 'object'
+      })
+      this.parsedModel = JSON.stringify(generatedModel, null, '\t')
+    },
+    validate () {
+      validateModel()
+    },
+    onChange (code) {
+      this.code = code
     }
   },
   watch: {
     code (newValue) {
       this.shouldParse = true
-      debounce(this.delayParse, 500)()
+      debounce(this.delayParse, 100)()
     }
   }
 }
@@ -112,18 +109,18 @@ body {
 }
 .code-container {
   flex: 1;
-  width: 100%
-}
-.pre-container {
-  flex: 1;
-  max-height: 400px;
   width: 100%;
+  max-width: 50%
 }
-.pre {
-  padding-top: 4px;
-  margin: 0;
-  height: 296px;
-  overflow: scroll;
-  padding-left: 20px;
+@media only screen and (max-width: 992px) {
+  .container {
+    display: block;
+    padding: 10px;
+  }
+  .code-container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    max-width: 100%;
+  }
 }
 </style>
