@@ -5,7 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ staging-website ]
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
 
 jobs:
   build:
@@ -24,11 +26,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run build --if-present
-    - run: npm run test:coverage
-    - run: ./node_modules/.bin/codecov -t $CODECOV_TOKEN
       env:
         CI: true
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -42,3 +41,4 @@ jobs:
         PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
         HOST: ${{ secrets.DOKKU_HOST_NAME }}
         PROJECT: ${{ secrets.DOKKU_APP_NAME }}
+        BRANCH: ${{ secrets.STAGING_BRANCH }}
