@@ -1,17 +1,45 @@
 <template>
-  <div class="container">
-    <div class="code-container">
-      <CodeEditor
-        :code="code"
-        :options="cmInputOptions"
-        :onTextChange="onChange"
-      />
-    </div>
-    <div class="code-container">
-      <CodeEditor
-        :code="parsedModel"
-        :options="cmOutputOptions"
-      />
+  <div>
+    <div class="container">
+      <div class="code-container">
+        <v-card
+          color="grey lighten-4"
+          flat
+          tile
+        >
+          <v-toolbar dense>
+            <v-spacer />
+            <v-toolbar-title>
+              Json Model
+            </v-toolbar-title>
+            <v-spacer />
+          </v-toolbar>
+        </v-card>
+        <CodeEditor
+          :code="code"
+          :options="cmInputOptions"
+          :onTextChange="onChange"
+        />
+      </div>
+      <div class="code-container">
+        <v-card
+          color="grey lighten-4"
+          flat
+          tile
+        >
+          <v-toolbar dense>
+            <v-spacer />
+            <v-toolbar-title class="toolbar-title">
+              Output Model
+            </v-toolbar-title>
+            <v-spacer />
+          </v-toolbar>
+        </v-card>
+        <CodeEditor
+          :code="parsedModel"
+          :options="cmOutputOptions"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -116,11 +144,18 @@ export default {
   .container {
     display: block;
     padding: 10px;
+    height: 100%
   }
   .code-container {
     padding-top: 20px;
     padding-bottom: 20px;
     max-width: 100%;
   }
+}
+.header {
+  padding: 40px;
+}
+.pepe {
+  text-align: center
 }
 </style>

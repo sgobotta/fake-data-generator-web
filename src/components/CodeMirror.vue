@@ -77,3 +77,14 @@ export default {
   }
 }
 </script>
+
+<style>
+.CodeMirror {
+  height: 480px;
+}
+@media only screen and (max-width: 992px) {
+  .CodeMirror {
+    height: 420px;
+  }
+}
+</style>
