@@ -27,8 +27,10 @@ export default {
 <style>
 .footer {
   width: 100%;
-  position: absolute;
+  position: fixed;
   bottom: 0;
+  background-color: #fff;
+  z-index: 999;
 }
 .link {
   text-decoration: none;
